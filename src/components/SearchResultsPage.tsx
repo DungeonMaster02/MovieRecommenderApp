@@ -1,10 +1,5 @@
-<<<<<<< Updated upstream
-import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-=======
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
->>>>>>> Stashed changes
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, Film, SlidersHorizontal } from 'lucide-react';
 import { MovieCard } from './MovieCard';
 import { movies, genres } from './mockData';
@@ -25,18 +20,20 @@ export function SearchResultsPage() {
   };
 
   const toggleGenre = (genre: string) => {
-    setSelectedGenres(prev => 
-      prev.includes(genre) 
+    setSelectedGenres(prev =>
+      prev.includes(genre)
         ? prev.filter(g => g !== genre)
         : [...prev, genre]
     );
   };
 
   const filteredMovies = movies.filter(movie => {
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch =
+      searchQuery === '' ||
       movie.title.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesGenre = selectedGenres.length === 0 || 
+
+    const matchesGenre =
+      selectedGenres.length === 0 ||
       selectedGenres.some(g => movie.genres.includes(g));
 
     return matchesSearch && matchesGenre;
@@ -53,15 +50,15 @@ export function SearchResultsPage() {
               <span className="text-xl text-white">CineScope</span>
             </div>
             <nav className="flex items-center gap-6">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 onClick={() => navigate('/')}
                 className="text-gray-300 hover:text-white"
               >
                 Home
               </Button>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 onClick={() => navigate('/watchlist')}
                 className="text-gray-300 hover:text-white"
               >
@@ -69,7 +66,7 @@ export function SearchResultsPage() {
               </Button>
             </nav>
           </div>
-          
+
           {/* Search Bar */}
           <form onSubmit={handleSearch} className="relative max-w-3xl">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -87,7 +84,9 @@ export function SearchResultsPage() {
       <div className="container mx-auto px-6 py-8">
         <div className="flex gap-8">
           {/* Sidebar Filters */}
-          <aside className={`${showFilters ? 'w-72' : 'w-0'} flex-shrink-0 transition-all overflow-hidden`}>
+          <aside
+            className={`${showFilters ? 'w-72' : 'w-0'} flex-shrink-0 transition-all overflow-hidden`}
+          >
             <div className="sticky top-24 space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-white">Filters</h3>
@@ -106,7 +105,10 @@ export function SearchResultsPage() {
                 <h4 className="text-gray-300">Genre</h4>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {genres.map((genre) => (
-                    <label key={genre} className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-white">
+                    <label
+                      key={genre}
+                      className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-white"
+                    >
                       <Checkbox
                         checked={selectedGenres.includes(genre)}
                         onCheckedChange={() => toggleGenre(genre)}
@@ -131,7 +133,7 @@ export function SearchResultsPage() {
                 Show Filters
               </Button>
             )}
-            
+
             <div className="mb-6">
               <p className="text-gray-400">
                 {filteredMovies.length} results found
@@ -140,13 +142,17 @@ export function SearchResultsPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredMovies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+                <div key={movie.id}>
+                  <MovieCard movie={movie} />
+                </div>
               ))}
             </div>
 
             {filteredMovies.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-gray-500">No results found. Try adjusting your filters.</p>
+                <p className="text-gray-500">
+                  No results found. Try adjusting your filters.
+                </p>
               </div>
             )}
           </div>
