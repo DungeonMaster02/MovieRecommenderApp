@@ -1,11 +1,15 @@
+<<<<<<< Updated upstream
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+=======
+import React, { useState } from 'react';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+>>>>>>> Stashed changes
 import { Search, Film, SlidersHorizontal } from 'lucide-react';
 import { MovieCard } from './MovieCard';
-import { movies, genres, streamingPlatforms } from './mockData';
+import { movies, genres } from './mockData';
 import { Button } from './ui/button';
 import { Checkbox } from './ui/checkbox';
-import { Slider } from './ui/slider';
 
 export function SearchResultsPage() {
   const [searchParams] = useSearchParams();
@@ -14,9 +18,6 @@ export function SearchResultsPage() {
   const [selectedGenres, setSelectedGenres] = useState<string[]>(
     searchParams.get('genre') ? [searchParams.get('genre')!] : []
   );
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [yearRange, setYearRange] = useState([2020, 2024]);
-  const [ratingRange, setRatingRange] = useState([0, 100]);
   const [showFilters, setShowFilters] = useState(true);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -31,32 +32,14 @@ export function SearchResultsPage() {
     );
   };
 
-  const togglePlatform = (platform: string) => {
-    setSelectedPlatforms(prev => 
-      prev.includes(platform) 
-        ? prev.filter(p => p !== platform)
-        : [...prev, platform]
-    );
-  };
-
   const filteredMovies = movies.filter(movie => {
     const matchesSearch = searchQuery === '' || 
       movie.title.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesGenre = selectedGenres.length === 0 || 
       selectedGenres.some(g => movie.genres.includes(g));
-    
-    const matchesPlatform = selectedPlatforms.length === 0 || 
-      selectedPlatforms.some(p => movie.platforms.includes(p));
-    
-    const matchesYear = movie.year >= yearRange[0] && movie.year <= yearRange[1];
-    
-    const avgScore = Math.round(
-      (movie.scores.rottenTomatoes + movie.scores.metacritic + (movie.scores.letterboxd * 20)) / 3
-    );
-    const matchesRating = avgScore >= ratingRange[0] && avgScore <= ratingRange[1];
 
-    return matchesSearch && matchesGenre && matchesPlatform && matchesYear && matchesRating;
+    return matchesSearch && matchesGenre;
   });
 
   return (
@@ -129,60 +112,6 @@ export function SearchResultsPage() {
                         onCheckedChange={() => toggleGenre(genre)}
                       />
                       <span>{genre}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Year Range */}
-              <div className="space-y-3">
-                <h4 className="text-gray-300">Year</h4>
-                <div className="space-y-2">
-                  <Slider
-                    value={yearRange}
-                    onValueChange={setYearRange}
-                    min={1990}
-                    max={2024}
-                    step={1}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-gray-400">
-                    <span>{yearRange[0]}</span>
-                    <span>{yearRange[1]}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Rating Range */}
-              <div className="space-y-3">
-                <h4 className="text-gray-300">Rating</h4>
-                <div className="space-y-2">
-                  <Slider
-                    value={ratingRange}
-                    onValueChange={setRatingRange}
-                    min={0}
-                    max={100}
-                    step={5}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-gray-400">
-                    <span>{ratingRange[0]}</span>
-                    <span>{ratingRange[1]}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Streaming Platform */}
-              <div className="space-y-3">
-                <h4 className="text-gray-300">Streaming Platform</h4>
-                <div className="space-y-2">
-                  {streamingPlatforms.map((platform) => (
-                    <label key={platform} className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-white">
-                      <Checkbox
-                        checked={selectedPlatforms.includes(platform)}
-                        onCheckedChange={() => togglePlatform(platform)}
-                      />
-                      <span>{platform}</span>
                     </label>
                   ))}
                 </div>
