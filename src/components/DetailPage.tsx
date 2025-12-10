@@ -14,7 +14,7 @@ import { AppHeader } from './AppHeader';
 export function DetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isInWatchlist, addToWatchlist, getStatus, moveToWatched } = useWatchlist();
+  const { isInWatchlist, addToWatchlist, getStatus, moveToWatched, removeFromWatchlist } = useWatchlist();
   const movies = useMemo(() => loadCatalog(), []);
   const movieId = id ?? '';
   const movie = movies.find(m => String(m.id) === movieId);
@@ -164,8 +164,8 @@ export function DetailPage() {
                   </Button>
                 ) : (
                   <Button
-                    disabled
-                    className="bg-gray-700"
+                    onClick={() => removeFromWatchlist(movie.id)}
+                    className="bg-gray-700 hover:bg-gray-600"
                   >
                     <Check className="w-4 h-4 mr-2" />
                     Watched
